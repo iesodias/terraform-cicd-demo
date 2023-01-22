@@ -25,9 +25,9 @@ jobs:
       uses: actions/checkout@v3
     - name: Terraform Init
       run: |
-        terraform init
+        terraform -chdir=manifest/ init
     - name: Terraform Validate
-      run: terraform  -chdir=manifest/ validate -no-color
+      run: terraform -chdir=manifest/ validate -no-color
     - name: Terraform Plan
       run: terraform -chdir=manifest/ plan -no-color -input=false
       continue-on-error: true
