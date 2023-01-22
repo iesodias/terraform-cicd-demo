@@ -6,11 +6,11 @@ on:
     inputs:
       name:
         description: 'StorageAccount Name'
-        required: false
-        default: 'Digite um nome aqui'
+        required: true
+        default: ''
 
 jobs:
-  terraform:
+  TerraformApply:
     name: 'Terraform'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
@@ -45,7 +45,30 @@ jobs:
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
-      
     - name: Terraform Apply
       run: terraform -chdir=manifest/ apply -var-file=var.tfvars -auto-approve -no-color -input=false
       continue-on-error: true
+
+  TerraformDestroy:
+    name: 'Terraform Destroy'
+    needs: [TerraformApply]
+    environment: 
+      name: HML
+    runs-on: ubuntu-latest
+    if:  github.event.inputs.destroyTerraform == 'false'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.0
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    - name: Terraform Init
+      run: |
+        terraform -chdir=terraform/ init
+    - name: Terraform Apply
+      run: |
+        #terraform -chdir=terraform/ init
+        #terraform -chdir=terraform/ plan -no-color -input=false
+        terraform -chdir=terraform/ apply -auto-approve -input=false
+        terraform -chdir=terraform/ output -json > config.json
