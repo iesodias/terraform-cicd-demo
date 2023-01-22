@@ -1,9 +1,13 @@
 name: 'terraform-deploy'
-on:
+on: 
   push:
-    branches:
-    - master
- 
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'StorageAccount Name'
+        required: false
+        default: 'Digite um nome aqui'
+
 jobs:
   terraform:
     name: 'Terraform'
@@ -12,6 +16,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      TF_VAR_STORAGE_ACCOUNT_NAME: ${{ github.event.name}}
     runs-on: ubuntu-latest
     #environment: production
  
@@ -19,17 +24,22 @@ jobs:
     defaults:
       run:
         shell: bash
- 
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        files: '["**/*.tfvars"]'
     - name: Terraform Init
       run: |
         terraform -chdir=manifest/ init
     - name: Terraform Validate
       run: terraform -chdir=manifest/ validate -no-color
     - name: Terraform Plan
-      run: terraform -chdir=manifest/ plan -no-color -input=false
+      run: terraform -chdir=manifest/ plan -var-file=manifest/var.tfvars -no-color -input=false
       continue-on-error: true
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
