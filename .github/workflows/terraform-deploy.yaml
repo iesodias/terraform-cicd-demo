@@ -63,7 +63,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        files: '["**/*.tfvars"]'
     - name: Terraform Apply
       run: |
         terraform -chdir=manifest/ init
-        terraform -chdir=manifest/ destroy -auto-approve -no-color
+        terraform -chdir=manifest/ destroy  -var-file=var.tfvars -auto-approve -no-color
