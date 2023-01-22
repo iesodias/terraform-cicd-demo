@@ -39,7 +39,7 @@ jobs:
     - name: Terraform Validate
       run: terraform -chdir=manifest/ validate -no-color
     - name: Terraform Plan
-      run: terraform -chdir=manifest/ plan -var-file=manifest/var.tfvars -no-color -input=false
+      run: terraform -chdir=manifest/ plan -var-file=var.tfvars -no-color -input=false
       continue-on-error: true
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
