@@ -11,7 +11,7 @@ on:
 
 jobs:
   TerraformApply:
-    name: 'Terraform'
+    name: 'TerraformApply'
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
@@ -25,7 +25,6 @@ jobs:
     defaults:
       run:
         shell: bash
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -61,7 +60,6 @@ jobs:
     environment: 
       name: EnvApproval
     runs-on: ubuntu-latest
-    if:  github.event.inputs.destroyTerraform == 'false'
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -71,10 +69,7 @@ jobs:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     - name: Terraform Init
       run: |
-        terraform -chdir=terraform/ init
+        terraform -chdir=manifest/ init
     - name: Terraform Apply
       run: |
-        #terraform -chdir=terraform/ init
-        #terraform -chdir=terraform/ plan -no-color -input=false
-        terraform -chdir=terraform/ apply -auto-approve -input=false
-        terraform -chdir=terraform/ output -json > config.json
+        terraform -chdir=manifest/ destroy -var-file=var.tfvars -auto-approve -no-color
