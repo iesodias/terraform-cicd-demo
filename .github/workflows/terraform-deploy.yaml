@@ -27,14 +27,14 @@ jobs:
       run: |
         terraform init
     - name: Terraform Validate
-      run: terraform  validate -no-color
+      run: terraform  -chdir=manifest/ validate -no-color
     - name: Terraform Plan
-      run: terraform plan -no-color -input=false
+      run: terraform -chdir=manifest/ plan -no-color -input=false
       continue-on-error: true
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
       
     - name: Terraform Apply
-      run: terraform apply -auto-approve -no-color -input=false
+      run: terraform -chdir=manifest/ apply -auto-approve -no-color -input=false
       continue-on-error: true
