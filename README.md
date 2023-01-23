@@ -17,6 +17,7 @@ az ad sp create-for-rbac --name SERVICE_PRINCIPAL --role Contributor --scopes /s
 }
 
 ```
+---
 
 ## Step 2
 
@@ -39,5 +40,5 @@ az ad sp create-for-rbac --name SERVICE_PRINCIPAL --role Contributor --scopes /s
 ```
 terraform -chdir=terraform-manifest init
 terraform -chdir=terraform-manifest plan
-terraform -chdir=terraform-manifest apply
+terraform -chdir=terraform-manifest apply -auto-approve
 ```
