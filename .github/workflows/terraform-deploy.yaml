@@ -13,10 +13,10 @@ jobs:
   TerraformApply:
     name: 'TerraformApply'
     env:
-      # ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-      # ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-      # ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      # ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
       TF_VAR_STORAGE_ACCOUNT_NAME: ${{ github.event.inputs.name}}
     runs-on: ubuntu-latest
     #environment: production
@@ -28,10 +28,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2.0.0
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     - uses: cschleiden/replace-tokens@v1
       with:
         tokenPrefix: '#{'
@@ -54,12 +50,12 @@ jobs:
 
   TerraformDestroy:
     name: 'Terraform Destroy'
-    # env:
-      # ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
-      # ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
-      # ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      # ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-      # TF_VAR_STORAGE_ACCOUNT_NAME: ${{ github.event.inputs.name}}
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      TF_VAR_STORAGE_ACCOUNT_NAME: ${{ github.event.inputs.name}}
     needs: [TerraformApply]
     environment: 
       name: EnvApproval
@@ -67,10 +63,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2.0.0
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     - uses: cschleiden/replace-tokens@v1
       with:
         tokenPrefix: '#{'
