@@ -41,7 +41,7 @@ jobs:
       uses: bridgecrewio/checkov-action@master
       with: 
         framework: terraform
-        directory: manifest
+        directory: manifest/
 
     # Upload results to GitHub Advanced Security
     - name: Upload SARIF file
