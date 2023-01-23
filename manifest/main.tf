@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "devops-actions"
+
+    workspaces {
+      name = "terraform-cicd-demo"
+    }
+  }
+}
+
 provider "azurerm" {
   features {}
 }
