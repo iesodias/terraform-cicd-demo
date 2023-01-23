@@ -17,11 +17,9 @@ Result:
 Now we need to create the following secrets:
 
 ```
-
-| AZURE_AD_CLIENT_ID | appId |
+| Variables | Values|
 |--------------------|-------|
+| AZURE_AD_CLIENT_ID | appId |
 | AZURE_AD_CLIENT_SECRET | password
-|-------|---------|
 |AZURE_AD_TENANT_ID | tenant |
-|-------|---------|
 |AZURE_SUBSCRIPTION_ID | subscription_id |
