@@ -29,11 +29,11 @@ jobs:
 
     # Validate terraform files
     - name: Terraform Validate
-      run: terraform validate -chdir=manifest
+      run: terraform -chdir=manifest validate 
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
-      run: terraform fmt -check -recursive -chdir=manifest
+      run: terraform -chdir=manifest fmt -check -recursive 
     
     # Perform a security scan of the terraform code using checkov
     - name: Run Checkov action
