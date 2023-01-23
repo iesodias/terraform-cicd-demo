@@ -1,10 +1,12 @@
 # Deploying Resources on Azure Cloud with Github Actions and Terraform
 
+## Step 1
+
 ```
 az ad sp create-for-rbac --name SERVICE_PRINCIPAL --role Contributor --scopes /subscriptions/SUBSCRIPTION_ID
 ```
 
-Result:
+### Result:
 
 ```
 {
@@ -16,7 +18,9 @@ Result:
 
 ```
 
-Now we need to create the following secrets:
+## Step 2
+
+### Now we need to create the following secrets:
 
 | Variables | Values|
 |--------------------|-------|
@@ -25,3 +29,15 @@ Now we need to create the following secrets:
 |AZURE_AD_TENANT_ID | tenant |
 |AZURE_SUBSCRIPTION_ID | subscription_id |
 |ARM_ACCESS_KEY | StorageAccountKey |
+
+---
+
+## Step 3
+
+### How to create terraform backend infra
+
+```
+terraform -chdir=terraform-manifest init
+terraform -chdir=terraform-manifest plan
+terraform -chdir=terraform-manifest apply
+```
