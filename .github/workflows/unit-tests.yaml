@@ -53,7 +53,7 @@ jobs:
     - name: Run Checkov action
       run: |
         pip install checkov
-        terraform -chdir=manifest init -backend=false
+        terraform -chdir=manifest init
         terraform -chdir=manifest validate
         terraform -chdir=manifest fmt
         terraform -chdir=manifest/ plan -var-file=var.tfvars --out tfplan.binary
