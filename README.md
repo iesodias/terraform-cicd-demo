@@ -14,12 +14,14 @@ Result:
 "tenant": "xxxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxxxxxxxx"
 }
 
+```
+
 Now we need to create the following secrets:
 
-```
 | Variables | Values|
 |--------------------|-------|
 |AZURE_AD_CLIENT_ID | appId |
 |AZURE_AD_CLIENT_SECRET | password
 |AZURE_AD_TENANT_ID | tenant |
 |AZURE_SUBSCRIPTION_ID | subscription_id |
+|ARM_ACCESS_KEY | StorageAccountKey |
