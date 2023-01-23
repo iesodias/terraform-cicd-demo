@@ -37,22 +37,25 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform -chdir=manifest init -backend=false 
+    # # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    # - name: Terraform Init
+    #   run: terraform -chdir=manifest init -backend=false 
 
-    # Validate terraform files
-    - name: Terraform Validate
-      run: terraform -chdir=manifest validate 
+    # # Validate terraform files
+    # - name: Terraform Validate
+    #   run: terraform -chdir=manifest validate 
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform -chdir=manifest fmt
+    # # Checks that all Terraform configuration files adhere to a canonical format
+    # - name: Terraform Format
+    #   run: terraform -chdir=manifest fmt
     
     # Perform a security scan of the terraform code using checkov
     - name: Run Checkov action
       run: |
         pip install checkov
+        terraform -chdir=manifest init -backend=false
+        terraform -chdir=manifest validate
+        terraform -chdir=manifest fmt
         terraform -chdir=manifest/ plan -var-file=var.tfvars --out tfplan.binary
         terraform -chdir=manifest/ show -json tfplan.binary > tfplan.json
         checkov -f tfplan.json
